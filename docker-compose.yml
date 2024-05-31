@@ -1,0 +1,21 @@
+version: '3'
+services:
+  geoserver:
+    image: docker.osgeo.org/geoserver:2.24.2
+    restart: "no"
+    container_name: desweb_geoserver_1
+    ports:
+      - ${FORWARDED_PORT}:8080
+    env_file:
+        - .env
+        - .env.dev
+    volumes:
+      - ./geoserver_data:/opt/geosserver_data/:Z
+      - ./additional_libs:/opt/additional_libs:Z # by mounting this we can install libs from host on startup
+    networks:
+      - gescont-djdesweb_desweb_postgis
+
+networks:
+   gescont-djdesweb_desweb_postgis:
+      driver: bridge
+      external: true
